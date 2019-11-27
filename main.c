@@ -8,10 +8,10 @@
  * \brief This function reads  and process an add instruction.
  *	
  */
-void add_word(){
+void add_word(HashTable * h){
 	char trash[TRASH],native_word[MAX_WORD],foreign_word[MAX_WORD];
 	scanf(" %s %s %s",trash,native_word,foreign_word);
-	printf("|%s| |%s| |%s|\n",trash,native_word,foreign_word);
+	addInTable(h,native_word,foreign_word);
 }
 
 /**
@@ -29,37 +29,35 @@ char * read_one_word(){
  *
  */
 
-void remove_word(){
+void remove_word(HashTable * h){
 	char * foreign_word = read_one_word();
-	printf("|%s|\n",foreign_word);
+	removeFromTable(h,foreign_word);
 	free(foreign_word);
 }
 /**
  * \brief This function reads  and process a find instruction.
  */
-void find(){
+void find(HashTable * h){
 	char * foreign_word = read_one_word();
-	printf("|%s|\n",foreign_word);
+	printf("%s\n",getsInTable(h,foreign_word));
 	free(foreign_word);
 }
 
 
 
 int main(void){
-	HashTable * teste=createHashTable();
-	addInTable(teste,"a","aa");
-	addInTable(teste,"a", "aa");
+	HashTable * table = createHashTable();
 	char operation;
 	while(scanf(" %c",&operation) != EOF){
 		if     (operation=='a'||operation=='A')
-			add_word();
+			add_word(table);
 		else if(operation=='r'||operation=='R')
-			remove_word();
+			remove_word(table);
 		else if(operation=='f'||operation=='F')
-			find();
+			find(table);
 		else
 			printf("Invalid Operation!\n");
 	}	
-	eraseHashTable(&(teste));
+	eraseHashTable(&(table));
 	return 0;
 }
